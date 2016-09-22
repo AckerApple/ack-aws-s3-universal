@@ -17,8 +17,9 @@ A wrapper for aws-sdk, aws-sdk-js, node-s3-encryption-client, and crypto
         - [Javascript Package Manager Install](#javascript-package-manager-install)
     - [Launch Browser Test](#launch-browser-test)
     - [Build for Deployment](#build-for-deployment)
-- [Example](#example)
-    - [Browser](#browser-example)
+- [Examples](#examples)
+    - [Node Example](#node-example)
+    - [Browser Example](#browser-example)
 - [Documentation](#documentation)
 
 ## Installation
@@ -107,7 +108,7 @@ npm run build
 
 ### Browser Example
 
-> The following example is available for testing, by opening the file [./dist/index.html]()
+> The following example is available for testing, by opening the file [./dist/index.html](https://github.com/AckerApple/ack-aws-s3-universal/blob/master/dist/index.html)
 
 ```
 <script src="ack-aws-s3-universal.js" type="text/javascript"></script>
