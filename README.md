@@ -5,6 +5,8 @@ A wrapper for aws-sdk, aws-sdk-js, node-s3-encryption-client, and crypto
 
 [DEMO PAGE](https://ackerapple.github.io/ack-aws-s3-universal/)
 
+> GOAL: To provide one package that facilitates both the web and node-server enviroment.
+
 ### Table of Contents
 - [Installation](#installation)
     - [Short-Hand Installation](#short-hand-installation)
