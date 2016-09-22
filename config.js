@@ -16,7 +16,7 @@ System.config({
   map: {
     "ack-angular": "github:ackerapple/ack-angular@master",
     "angular": "github:angular/bower-angular@1.5.8",
-    "aws-sdk-js": "github:aws/aws-sdk-js@2.4.11",
+    "aws-sdk-js": "github:aws/aws-sdk-js@2.6.4",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "buffer": "github:jspm/nodelibs-buffer@0.1.0",
