@@ -37,13 +37,13 @@
     "ack-pug-bundler": "^1.1.2",
     "ack-sass": "^1.0.8",
     "jspm": "^0.16.41",
-    "node-s3-encryption-client": "0.0.2",
     "pug": "^2.0.0-beta4",
     "sass-jspm-importer": "0.0.6"
   },
   "dependencies": {
     "aws-sdk": "^2.4.10",
-    "crypto": "0.0.3"
+    "crypto": "0.0.3",
+    "node-s3-encryption-client": "0.0.2"
   },
   "jspm": {
     "main": "src/jspm.js",
