@@ -49,6 +49,15 @@ class TestForm{
   putObject(){
     this.applyAwsAccess()
 
+    var s3 = Object.assign({}, this.s3)
+    
+    this.S3.putObject(s3, (err,data)=>{
+      if(err)return console.log(err)
+
+      this.fetching = false
+      alert('PUT success!!!!')
+      this.$scope.$apply()
+    })
   }
 
   getConfig(){

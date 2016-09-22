@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en" ng-app="test-app"><head><meta charset="UTF-8"><meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0"><script src="ack-aws-s3-universal.js"></script><script>console.log('ackS3', ackS3)
+
+//ACCESS CONFIG
+ackS3.AWS.config.update({
+  accessKeyId: ""
+  ,secretAccessKey: ""
+})
+ackS3.AWS.config.region = 'us-east-1'
+
+var bucket = ""
+var filename = ""
+var getData = {
+  Bucket:bucket,
+  Body:"Hello S3 World!",
+  Key:filename
+}
+
+var putData = {
+  Bucket:bucket,
+  Body:"Hello S3 World!",
+  Key:filename,
+  KmsParams:{
+    KeyId:"",
+    KeySpec:"AES_256"
+  }
+}
+
+
+function getObject(){
+  ackS3.getObject(getData, (err,data)=>{
+    if(err)return console.log(err)
+
+    alert('GET success!!!!')
+    console.log('GET.BODY', data.Body)
+  })
+}
+
+function putObject(){
+  ackS3.putObject(putData, (err,data)=>{
+    if(err)return console.error(err)
+    alert('PUT success!!!!')
+  })
+}
+
+//getObject()
+//putObject()</script></head><body><h3>Edit this index.html file</h3><p>View console for results</p></body></html>

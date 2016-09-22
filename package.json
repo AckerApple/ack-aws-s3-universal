@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "ionic serve",
-    "build": "npm run build:pug && npm run build:s3 && npm run build:js && npm run build:index && npm run build:css",
+    "build": "npm run build:dist:index && npm run build:dist && npm run build:pug && npm run build:s3 && npm run build:js && npm run build:index && npm run build:css",
     "build:index": "pug src/index.pug --out www",
+    "build:dist:index": "pug src/dist/index.pug --out dist",
     "build:pug": "node scripts/build-pug",
     "build:css": "node scripts/build-css",
-    "build:js": "jspm bundle-sfx src/test-app.js www/test-app.js",
+    "build:js": "jspm build src/test-app.js www/test-app.js",
+    "build:dist": "jspm build ./src/dist/ack-aws-s3-universal.js dist/ack-aws-s3-universal.js",
     "build:s3": "node scripts/rewrite-node-s3-encryption-client"
   },
   "repository": {
@@ -36,7 +38,7 @@
   "devDependencies": {
     "ack-pug-bundler": "^1.1.2",
     "ack-sass": "^1.0.8",
-    "jspm": "^0.16.41",
+    "jspm": "^0.17.0-beta.28",
     "pug": "^2.0.0-beta4",
     "sass-jspm-importer": "0.0.6"
   },
@@ -46,18 +48,172 @@
     "node-s3-encryption-client": "0.0.2"
   },
   "jspm": {
-    "main": "src/jspm.js",
+    "main": "ack-aws-s3-universal.js",
     "dependencies": {
-      "aws-sdk-js": "github:aws/aws-sdk-js@^2.6.4",
-      "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-      "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+      "aws-sdk": "npm:aws-sdk@^2.6.4",
+      "aws-sdk-js": "github:aws/aws-sdk-js@^2.6.4"
     },
     "devDependencies": {
       "ack-angular": "github:ackerapple/ack-angular@master",
       "angular": "github:angular/bower-angular@^1.5.8",
-      "babel": "npm:babel-core@^5.8.24",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
+      "core-js": "npm:core-js@^1.1.4",
+      "estraverse": "npm:estraverse@^4.2.0",
+      "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
+      "readline": "github:jspm/nodelibs-readline@^0.2.0-alpha",
+      "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
+      "uglify-js": "npm:uglify-js@^2.6"
+    },
+    "peerDependencies": {
+      "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
+      "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
+      "child_process": "github:jspm/nodelibs-child_process@^0.2.0-alpha",
+      "constants": "github:jspm/nodelibs-constants@^0.2.0-alpha",
+      "crypto": "github:jspm/nodelibs-crypto@^0.2.0-alpha",
+      "events": "github:jspm/nodelibs-events@^0.2.0-alpha",
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
+      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
+      "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
+      "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
+      "timers": "github:jspm/nodelibs-timers@^0.2.0-alpha",
+      "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
+      "vm": "github:jspm/nodelibs-vm@^0.2.0-alpha"
+    },
+    "overrides": {
+      "github:angular/bower-angular-animate@1.5.8": {
+        "main": "angular-animate",
+        "registry": "jspm",
+        "dependencies": {
+          "angular": "^1.3.0"
+        },
+        "meta": {
+          "angular-animate.js": {
+            "deps": [
+              "angular"
+            ],
+            "format": "global"
+          }
+        }
+      },
+      "github:angular/bower-angular-mocks@1.5.8": {
+        "main": "angular-mocks",
+        "registry": "jspm",
+        "dependencies": {
+          "angular": "github:angular/bower-angular@^1.3.0"
+        },
+        "meta": {
+          "angular-mocks.js": {
+            "deps": [
+              "angular"
+            ],
+            "format": "global"
+          }
+        }
+      },
+      "github:angular/bower-angular@1.5.8": {
+        "main": "angular",
+        "meta": {
+          "angular.js": {
+            "exports": "angular",
+            "format": "global"
+          }
+        }
+      },
+      "npm:angular@1.5.8": {
+        "format": "global",
+        "jspmNodeConversion": false,
+        "main": "angular",
+        "meta": {
+          "angular.js": {
+            "exports": "angular",
+            "format": "global"
+          }
+        }
+      },
+      "npm:aws-sdk@2.6.4": {
+        "main": "dist/aws-sdk",
+        "format": "global",
+        "jspmNodeConversion": "false",
+        "meta": {
+          "dist/aws-sdk.js": {
+            "exports": "AWS",
+            "format": "global"
+          }
+        }
+      },
+      "npm:babel-runtime@5.8.38": {
+        "main": false,
+        "dependencies": {},
+        "optionalDependencies": {
+          "core-js": "^1.2.0"
+        }
+      },
+      "npm:debug@2.2.0": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "./node.js": {
+            "browser": "./browser.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:esprima@2.7.3": {
+        "jspmNodeConversion": false
+      },
+      "npm:inherits@2.0.1": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:ms@0.7.1": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      },
+      "npm:readable-stream@1.0.34": {
+        "map": {
+          "stream": "stream-browserify/index"
+        },
+        "systemjs": {
+          "main": "readable.js"
+        },
+        "dependencies": {
+          "core-util-is": "~1.0.0",
+          "isarray": "0.0.1",
+          "string_decoder": "~0.10.0",
+          "inherits": "~2.0.1",
+          "stream-browserify": "~1.0.0"
+        }
+      },
+      "npm:readable-stream@1.1.14": {
+        "map": {
+          "stream": "stream-browserify/index"
+        },
+        "systemjs": {
+          "main": "readable.js"
+        },
+        "dependencies": {
+          "core-util-is": "~1.0.0",
+          "inherits": "~2.0.1",
+          "isarray": "0.0.1",
+          "string_decoder": "~0.10.0",
+          "stream-browserify": "^1.0.0"
+        }
+      }
     }
   },
   "private": true

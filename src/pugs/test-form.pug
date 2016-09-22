@@ -30,7 +30,7 @@
       br
 
     div
-      label(for="$ctrl.s3.Key") Key
+      label(for="$ctrl.s3.Key") Key (file-name)
       div
         input(ng-model="$ctrl.s3.Key" id="$ctrl.s3.Key" placeholder="S3 save path")
       br
@@ -70,7 +70,7 @@
       button(type="button" style="width:100%;margin:0;display:block;" ng-click="$ctrl.putObject()") putObject
 
 .fx-fade-up.fx-stagger-200(ng-show="$ctrl.fetching")
-  |Loading...Loading...
+  |Loading...
 
 .fx-fade-up.fx-stagger-200(ng-show="$ctrl.resultOfGet")
   hr

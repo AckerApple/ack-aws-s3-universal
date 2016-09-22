@@ -17,6 +17,8 @@ A wrapper for aws-sdk, aws-sdk-js, node-s3-encryption-client, and crypto
         - [Javascript Package Manager Install](#javascript-package-manager-install)
     - [Launch Browser Test](#launch-browser-test)
     - [Build for Deployment](#build-for-deployment)
+- [Example](#example)
+    - [Browser](#browser-example)
 - [Documentation](#documentation)
 
 ## Installation
@@ -98,12 +100,63 @@ npm test
 npm run build
 ```
 
-## Documentation
+## Examples
 
-### passhash( word )
-Transmit password securly using the following functionality
+### Node Example
+> Example coming soon
+
+### Browser Example
+
+> The following example is available for testing, by opening the file [./dist/index.html]()
+
 ```
-import passhash from "ack-aws-s3-universal/passhash"
+<script src="ack-aws-s3-universal.js" type="text/javascript"></script>
+<script>
+  //ACCESS CONFIG
+  ackS3.AWS.config.update({
+    accessKeyId: ""
+    ,secretAccessKey: ""
+  })
+  ackS3.AWS.config.region = 'us-east-1'
 
-passhash('user password')
+  var bucket = ""
+  var filename = ""
+
+  //GET CONFIG
+  var getData = {
+    Bucket:bucket,
+    Body:"Hello S3 World!",
+    Key:filename
+  }
+
+  //PUT CONFIG
+  var putData = {
+    Bucket:bucket,
+    Body:"Hello S3 World!",
+    Key:filename,
+    KmsParams:{
+      KeyId:"",
+      KeySpec:"AES_256"
+    }
+  }
+
+  function getObject(){
+    ackS3.getObject(getData, (err,data)=>{
+      if(err)return console.log(err)
+
+      alert('GET success!!!!')
+      console.log('GET.BODY', data.Body)
+    })
+  }
+
+  function putObject(){
+    ackS3.putObject(putData, (err,data)=>{
+      if(err)return console.error(err)
+      alert('PUT success!!!!')
+    })
+  }
+
+  getObject()
+  putObject()
+</script>
 ```
