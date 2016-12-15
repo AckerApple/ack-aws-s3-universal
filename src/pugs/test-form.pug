@@ -38,16 +38,16 @@
     div
       label(for="$ctrl.mode") Mode
       .form-control-static
-        input(type="checkbox" ng-click="$ctrl.mode='getObject'" id="$ctrl.mode0" ng-checked="$ctrl.mode=='getObject'")
-        label(for="$ctrl.mode0") &nbsp;getObject
+        input(type="checkbox" ng-click="$ctrl.mode='get'" id="$ctrl.mode0" ng-checked="$ctrl.mode=='get'")
+        label(for="$ctrl.mode0") &nbsp;get
         |&nbsp;&nbsp;&nbsp;
-        input(type="checkbox" ng-click="$ctrl.mode='putObject'" id="$ctrl.mode1" ng-checked="$ctrl.mode=='putObject'")
-        label(for="$ctrl.mode1") &nbsp;putObject
-  
-  .flex.align-bottom.fx-fade-up.fx-stagger-200(style="padding:0 1em;width:200px;" ng-show="$ctrl.mode=='getObject'")
-    button(type="button" style="width:100%" ng-click="$ctrl.getObject()") getObject
+        input(type="checkbox" ng-click="$ctrl.mode='put'" id="$ctrl.mode1" ng-checked="$ctrl.mode=='put'")
+        label(for="$ctrl.mode1") &nbsp;put
 
-  .fx-fade-up.fx-stagger-200(style="padding:0 1em;" ng-show="$ctrl.mode=='putObject'")
+  .flex.align-bottom.fx-fade-up.fx-stagger-200(style="padding:0 1em;width:200px;" ng-show="$ctrl.mode=='get'")
+    button(type="button" style="width:100%" ng-click="$ctrl.get()") get
+
+  .fx-fade-up.fx-stagger-200(style="padding:0 1em;" ng-show="$ctrl.mode=='put'")
     h3 Kms Params
     
     div
@@ -62,19 +62,28 @@
         input(ng-model="$ctrl.s3.KmsParams.KeySpec" id="$ctrl.s3.KmsParams.KeySpec")
       br
   
-  .fx-fade-up.fx-stagger-200(style="padding:0 1em;" ng-show="$ctrl.mode=='putObject'")
+  .fx-fade-up.fx-stagger-200(style="padding:0 1em;" ng-show="$ctrl.mode=='put'")
     h3
       label(for="$ctrl.s3.Body") Body Payload
     div(style="width:300px")
       textarea(ng-model="$ctrl.s3.Body" id="$ctrl.s3.Body" style="height:200px;width:100%" placeholder="Data that will be stored in AWS S3")
-      button(type="button" style="width:100%;margin:0;display:block;" ng-click="$ctrl.putObject()") putObject
+      button(type="button" style="width:100%;margin:0;display:block;" ng-click="$ctrl.put()") put
 
 .fx-fade-up.fx-stagger-200(ng-show="$ctrl.fetching")
   |Loading...
 
+.fx-fade-up.fx-stagger-200(ng-if="$ctrl.error && !$ctrl.error.closeDetails")
+  .border.border-assertive.pad.bg-danger
+    .flex-wrap.flex-valign-center
+      .flex1.text-danger {{$ctrl.error || 'Unexpected Error Occurred'}}
+      a.text-xs.pad-xs.underline(ng-click="$ctrl.errorDetails=!$ctrl.errorDetails") more
+      a.text-xs.pad-xs.underline(ng-click="$ctrl.error.closeDetails=true") close
+      .fx-fade-up(ng-if="$ctrl.errorDetails")
+        pre {{$ctrl.error|json}}
+
 .fx-fade-up.fx-stagger-200(ng-show="$ctrl.resultOfGet")
   hr
-  h3 Result of getObject
+  h3 Result of get
   textarea(style="height:150px;width:100%" ng-model="$ctrl.resultOfGet")
 hr
 div

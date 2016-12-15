@@ -1,6 +1,8 @@
-import s3ec from "./s3-encryption-client"
+import s3ec from "./s3-encryption-client-extended"
 
-import "aws-sdk"
+//import "aws-sdk"
+import "./aws-sdk-js"
+
 //import "aws-sdk-js/aws"
 //import "aws-sdk-js/aws-sdk"
 import crypto from "crypto"

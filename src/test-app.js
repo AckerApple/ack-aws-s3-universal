@@ -6,9 +6,10 @@ import testFormTemplate from "./templates/test-form.pug"
 
 class TestForm{
   constructor(S3,$scope){
+    this.mode = 'get'
     this.S3 = S3
     this.$scope = $scope
-    this.mode = 'getObject'
+
     this.aws = {region:"us-east-1"}
     this.s3 = {
       Body:"Hello S3 World!",
@@ -29,7 +30,7 @@ class TestForm{
     this.S3.AWS.config.region = 'us-east-1'
   }
 
-  getObject(){
+  get(){
     this.fetching = true
     this.applyAwsAccess()
     
@@ -38,23 +39,40 @@ class TestForm{
     delete s3.KmsParams
 
     this.S3.getObject(s3, (err,data)=>{
-      if(err)return console.log(err)
-
       this.fetching = false
+      
+      if(err){
+        this.error = this.checkReqError(err)
+        this.$scope.$digest()
+        return console.log(err)
+      }
+
       this.resultOfGet = data.Body
       this.$scope.$apply()
     })
   }
 
-  putObject(){
+  checkReqError(err){
+    if(err.message=='Network Failure'){
+      err.details = 'This could also be perhaps because CORS is not enabled on your S3 bucket (<a href="https://github.com/AckerApple/ack-aws-s3-universal#s3-browser-cors-warning">learn more</a>).'
+    }
+    return err
+  }
+
+  put(){
     this.applyAwsAccess()
 
     var s3 = Object.assign({}, this.s3)
     
     this.S3.putObject(s3, (err,data)=>{
-      if(err)return console.log(err)
-
       this.fetching = false
+      
+      if(err){
+        this.error = this.checkReqError(err)
+        this.$scope.$digest()
+        return console.log(err)
+      }
+
       alert('PUT success!!!!')
       this.$scope.$apply()
     })

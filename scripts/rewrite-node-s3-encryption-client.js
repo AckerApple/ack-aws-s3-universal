@@ -16,7 +16,8 @@ mainContents = mainContents.replace(/(\r|\n)/g,'$1  ')//tab-out
 mainContents = mainContents.replace(/kms\./g,'new AWS.KMS().')//delay when constructed
 mainContents = mainContents.replace(/s3\./g,'new AWS.S3().')//delay when constructed
 
-const newString = `//rewritten from node-s3-encryption-client via ../scripts/rewrite-node-s3-encryption-client.js
+const newString = `//DO NOT EDIT, overwritten in build:s3 process
+
 module.exports = function(AWS, crypto, Buffer){
   var exports = {AWS:AWS, crypto:crypto, Buffer:Buffer},
       crypt = {},

@@ -2,16 +2,15 @@
 
 //ACCESS CONFIG
 ackS3.AWS.config.update({
-  accessKeyId: ""
-  ,secretAccessKey: ""
+  accessKeyId: ""//fill
+  ,secretAccessKey: ""//fill
 })
 ackS3.AWS.config.region = 'us-east-1'
 
-var bucket = ""
-var filename = ""
+var bucket = ""//fill
+var filename = ""//fill
 var getData = {
   Bucket:bucket,
-  Body:"Hello S3 World!",
   Key:filename
 }
 
@@ -27,7 +26,7 @@ var putData = {
 
 
 function getObject(){
-  ackS3.getObject(getData, (err,data)=>{
+  ackS3.get(getData, (err,data)=>{
     if(err)return console.log(err)
 
     alert('GET success!!!!')
@@ -36,11 +35,12 @@ function getObject(){
 }
 
 function putObject(){
-  ackS3.putObject(putData, (err,data)=>{
+  ackS3.put(putData, (err,data)=>{
     if(err)return console.error(err)
     alert('PUT success!!!!')
   })
 }
 
+//use the following commands when ready
 //getObject()
 //putObject()</script></head><body><h3>Edit this index.html file</h3><p>View console for results</p></body></html>

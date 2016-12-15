@@ -9,140 +9,142 @@ A wrapper for aws-sdk, aws-sdk-js, node-s3-encryption-client, and crypto
 
 ### Table of Contents
 - [Installation](#installation)
-    - [Short-Hand Installation](#short-hand-installation)
-    - [Detailed Installation](#detailed-installation)
-        - [Global Install Dependencies](#global-install-dependencies)
-        - [GIT Checkout](#git-checkout)
-        - [Node Package Manager Install](#node-package-manager-install)
-        - [Javascript Package Manager Install](#javascript-package-manager-install)
-    - [Launch Browser Test](#launch-browser-test)
-    - [Build for Deployment](#build-for-deployment)
+  - [Launch Browser Test](#launch-browser-test)
+  - [Build for Deployment](#build-for-deployment)
+- [S3 Browser CORS Warning](#s3-browser-cors-warning)
 - [Examples](#examples)
-    - [Node Example](#node-example)
-    - [Browser Example](#browser-example)
-- [Documentation](#documentation)
+  - [Node Examples](#node-example)
+    - [GET Example](#nodejs-get-example)
+    - [PUT Example](#nodejs-put-example)
+  - [Browser Examples](#browser-example)
+    - [GET Example](#get-example)
+    - [PUT Example](#put-example)
 
 ## Installation
-### Short-Hand Installation
-If you've done this before or just want an installation overview, read the following.
-
-Create a project folder called "ack-aws-s3-universal" and then begin to run commands against it.
-
-> In a command terminal, type the following, one command after another:
-
 ```
-npm install pug-cli jspm@beta ionic-serve -g
-
-git clone "https://github.com/ackerapple/ack-aws-s3-universal.git"
-
-npm install
-
-jspm install
+npm install ack-aws-s3-universal --save
 ```
 
-> After running the above, if you encounter any error related to invalid access. Please read the [GIT Checkout](#git-checkout) portion of this guide.
+## S3 Browser CORS Warning
+To GET, PUT, or POST to an S3 bucket from a web browser, Cross Origin Requests must be configured properly.
 
+Enable CORS on your S3 bucket
 
-### Detailed Installation
-Requires NodeJs to be pre-installed. All install commands are run in a command line terminal.
+- Login to AWS
+- Goto S3 bucket
+- Goto Properties
+- Goto Permissions
+- Goto CORS Configuration
 
-#### Global Install Dependencies
-Some functionality that is depended on, must be installed at the Operating System level.
-
-> In a command terminal, type the following:
-
-```
-npm install pug-cli jspm@beta ionic-serve -g
-```
-
-#### GIT Checkout
-> In a command terminal, type the following:
+Use the following universal configuration to allow CORS on your S3 bucket
 
 ```
-git clone "https://github.com/ackerapple/ack-aws-s3-universal.git"
-```
-
->> Now, private repositories will to be checked out.
->> Authenticated access maybe required.
->> You can set your jspm private repo access to be the same as your github
-
-> In a command terminal, type the following, only if you want github to act as your jspm credentials:
-
-```
-jspm registry config github
-```
-
-
-#### Node Package Manager Install
-> In a command terminal, type the following:
-
-```
-npm install
-```
-
-#### Javascript Package Manager Install
-> In a command terminal, type the following:
-
-```
-jspm install
-```
-
-### Launch Browser Test
-> In a command terminal, type the following:
-
-```
-npm test
-```
-
-### Build for Deployment
-> In a command terminal, type the following:
-
-```
-npm run build
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedMethod>PUT</AllowedMethod>
+        <AllowedMethod>POST</AllowedMethod>
+        <AllowedMethod>DELETE</AllowedMethod>
+        <MaxAgeSeconds>3000</MaxAgeSeconds>
+        <ExposeHeader>x-amz-server-side-encryption</ExposeHeader>
+        <ExposeHeader>x-amz-request-id</ExposeHeader>
+        <ExposeHeader>x-amz-id-2</ExposeHeader>
+        <ExposeHeader>x-amz-meta-x-amz-key</ExposeHeader>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+</CORSConfiguration>
 ```
 
 ## Examples
 
-### Node Example
-> Example coming soon
+### Node Examples
 
-### Browser Example
+### NodeJs GET Example
+```
+const ackS3 = require('ack-aws-s3-universal')
 
-> The following example is available for testing, by opening the file [./dist/index.html](https://github.com/AckerApple/ack-aws-s3-universal/blob/master/dist/index.html)
+const config = {
+  accessKeyId: ""//fill
+  ,secretAccessKey: ""//fill
+}
+const bucket = ""//fill
+const filename = ""//fill
 
+//ACCESS CONFIG
+ackS3.AWS.config.update(config)
+ackS3.AWS.config.region = 'us-east-1'
+
+const getData = {
+  Bucket:bucket,
+  Key:filename
+}
+
+ackS3.promise(getData)
+.then(data=>{
+  console.log(data.Body)
+})
+.catch(e=>console.error(e))
+```
+
+### NodeJs PUT Example
+Use config variables seen in [NodeJs GET Example](#nodejs-get-example) to continue with this example
+```
+const putData = {
+  Bucket:bucket,
+  Body:"Hello S3 World!",
+  Key:filename,
+  KmsParams:{//optional fill for encryption
+    KeyId:"",//fill
+    KeySpec:"AES_256"
+  }
+}
+
+ackS3.promisePut(putData)
+.then(data=>{
+  console.log('put success!')
+})
+.catch(e=>console.error(e))
+```
+
+### Browser Examples
+
+> If you are bundling (webpack/jspm) this code
+```
+import ackS3 from "ack-aws-s3-universal"
+```
+
+> If you need a script tag:
 ```
 <script src="ack-aws-s3-universal.js" type="text/javascript"></script>
+```
+
+The following examples are also available for testing here: [./dist/index.html](https://github.com/AckerApple/ack-aws-s3-universal/blob/master/dist/index.html)
+
+### GET Example
+```
 <script>
+  //The variable "ackS3" must already be available
+
   //ACCESS CONFIG
   ackS3.AWS.config.update({
-    accessKeyId: ""
-    ,secretAccessKey: ""
+    accessKeyId: ""//fill
+    ,secretAccessKey: ""//fill
   })
   ackS3.AWS.config.region = 'us-east-1'
 
-  var bucket = ""
-  var filename = ""
+  var bucket = ""//fill
+  var filename = ""//fill
 
   //GET CONFIG
   var getData = {
     Bucket:bucket,
-    Body:"Hello S3 World!",
     Key:filename
   }
 
-  //PUT CONFIG
-  var putData = {
-    Bucket:bucket,
-    Body:"Hello S3 World!",
-    Key:filename,
-    KmsParams:{
-      KeyId:"",
-      KeySpec:"AES_256"
-    }
-  }
-
   function getObject(){
-    ackS3.getObject(getData, (err,data)=>{
+    ackS3.get(getData, (err,data)=>{
       if(err)return console.log(err)
 
       alert('GET success!!!!')
@@ -150,14 +152,35 @@ npm run build
     })
   }
 
+
+  getObject()
+</script>
+```
+
+### PUT Example
+Use config variables seen in [GET Example](#get-example) to continue with this example
+```
+<script>
+  //The variable "ackS3" must already be available
+  //ackS3 adn ACCESS CONFIG must already be configured. See GET Example
+
+  //PUT CONFIG
+  var putData = {
+    Bucket:bucket,//configred in GET example
+    Body:"Hello S3 World!",
+    Key:filename,//configred in GET example
+    KmsParams:{//optional fill
+      KeyId:"",//fill
+      KeySpec:"AES_256"
+    }
+  }
+
   function putObject(){
-    ackS3.putObject(putData, (err,data)=>{
+    ackS3.put(putData, (err,data)=>{
       if(err)return console.error(err)
       alert('PUT success!!!!')
     })
   }
-
-  getObject()
+  
   putObject()
-</script>
 ```

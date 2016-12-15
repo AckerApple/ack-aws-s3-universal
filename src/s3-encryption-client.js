@@ -1,4 +1,5 @@
-//rewritten from node-s3-encryption-client via ../scripts/rewrite-node-s3-encryption-client.js
+//DO NOT EDIT, overwritten in build:s3 process
+
 module.exports = function(AWS, crypto, Buffer){
   var exports = {AWS:AWS, crypto:crypto, Buffer:Buffer},
       crypt = {},
