@@ -3,7 +3,7 @@ Library to perform AWS S3 in a universal manner between both NodeJs and Web Brow
 
 A wrapper for aws-sdk, aws-sdk-js, node-s3-encryption-client, and crypto
 
-[DEMO PAGE](https://ackerapple.github.io/ack-aws-s3-universal/)
+[WEB-BASED DEMO PAGE](https://ackerapple.github.io/ack-aws-s3-universal/)
 
 > GOAL: To provide one package that facilitates both the web and node-server enviroment.
 
@@ -117,7 +117,7 @@ import ackS3 from "ack-aws-s3-universal"
 
 > If you need a script tag:
 ```
-<script src="ack-aws-s3-universal.js" type="text/javascript"></script>
+<script src="dist/ack-aws-s3-universal.js" type="text/javascript"></script>
 ```
 
 The following examples are also available for testing here: [./dist/index.html](https://github.com/AckerApple/ack-aws-s3-universal/blob/master/dist/index.html)

@@ -1,6 +1,6 @@
 {
   "name": "ack-aws-s3-universal",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Library to perform AWS S3 in a universal manner between both NodeJs and Web Browsers, with focus on with optional KmsParams",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "build:dist:index": "pug src/dist/index.pug --out dist/",
     "build:dist": "npm run build:dist:index && npm run build:dist:js",
     "build:pug": "node scripts/build-pug",
-    "build:css": "node scripts/build-css",
+    "build:css": "ack-sass src/test-scss/styles.scss www/styles.css --production --sass-jspm-importer",
     "build:js": "jspm build src/test-app.js www/test-app.js --minify --skip-source-maps",
     "build:dist:js": "jspm build ./src/dist/ack-aws-s3-universal.js dist/ack-aws-s3-universal.js --skip-source-maps --minify",
     "build:s3": "node scripts/rewrite-node-s3-encryption-client",
